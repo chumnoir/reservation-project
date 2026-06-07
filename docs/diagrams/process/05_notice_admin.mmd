@@ -1,0 +1,37 @@
+---
+title: お知らせ管理処理 クラス図 (追加 / 編集 / 削除)
+---
+classDiagram
+    direction LR
+    class AdminAuthFilter {
+        +doFilter() : IP制限と管理者認証
+    }
+    class NoticeAdminServlet {
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class NoticeService {
+        +findAll() List
+        +findById(id) NoticeDTO
+        +create(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+    }
+    class NoticeDAO {
+        +findAll() List
+        +findById(id) NoticeDTO
+        +insert(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+    }
+    class NoticeDTO {
+        -int noticeId
+        -String title
+        -String content
+    }
+    class DBConnection
+    AdminAuthFilter ..> NoticeAdminServlet : 通過後に到達
+    NoticeAdminServlet ..> NoticeService : CRUD 呼び出し
+    NoticeService --> NoticeDAO : CRUD
+    NoticeDAO --> DBConnection : 接続取得
+    NoticeDAO ..> NoticeDTO : 生成 / 永続化

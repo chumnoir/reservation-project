@@ -1,0 +1,38 @@
+---
+title: 会員登録処理 クラス図
+---
+classDiagram
+    direction LR
+    class RegisterServlet {
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class MemberService {
+        +register(MemberDTO) boolean
+        -validateForRegister(MemberDTO)
+    }
+    class ValidationUtil {
+        +isBlank(s)$ boolean
+        +isEmail(s)$ boolean
+        +isPhone(s)$ boolean
+    }
+    class MemberDAO {
+        +existsByEmail(email) boolean
+        +insert(MemberDTO) boolean
+    }
+    class MemberDTO {
+        -String name
+        -String email
+        -String phone
+        -String address
+        -String password
+    }
+    class DBConnection {
+        +getConnection() Connection$
+    }
+    RegisterServlet ..> MemberService : register 呼び出し
+    RegisterServlet ..> MemberDTO : 入力値を格納
+    MemberService ..> ValidationUtil : 入力検証
+    MemberService --> MemberDAO : existsByEmail と insert
+    MemberDAO --> DBConnection : 接続取得
+    MemberDAO ..> MemberDTO : 永続化

@@ -1,0 +1,20 @@
+---
+title: 予約キャンセル処理 クラス図
+---
+classDiagram
+    direction LR
+    class ReservationServlet {
+        +doPost(req, resp)
+    }
+    class ReservationService {
+        +cancel(reservationId, memberId) void
+    }
+    class ReservationDAO {
+        +cancelByMember(reservationId, memberId) boolean
+    }
+    class DBConnection {
+        +getConnection() Connection$
+    }
+    ReservationServlet ..> ReservationService : cancel 呼び出し
+    ReservationService --> ReservationDAO : cancelByMember
+    ReservationDAO --> DBConnection : 本人かつ確定のみ更新

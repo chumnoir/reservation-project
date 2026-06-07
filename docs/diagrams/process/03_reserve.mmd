@@ -1,0 +1,43 @@
+---
+title: 予約処理 クラス図
+---
+classDiagram
+    direction LR
+    class ReservationServlet {
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class ReservationService {
+        +reserve(mId, wId, cId, people) boolean
+    }
+    class WorkshopService {
+        +findById(id) WorkshopDTO
+    }
+    class CourseService {
+        +findAll() List
+    }
+    class ReservationDAO {
+        +existsReservation(mId, wId) boolean
+        +insert(ReservationDTO) boolean
+    }
+    class WorkshopDAO {
+        +findById(id) WorkshopDTO
+    }
+    class CourseDAO {
+        +findById(id) CourseDTO
+    }
+    class ReservationDTO {
+        -int memberId
+        -int workshopId
+        -int courseId
+        -int numberOfPeople
+    }
+    class DBConnection
+    ReservationServlet ..> ReservationService : reserve 呼び出し
+    ReservationServlet ..> WorkshopService : 確認画面表示
+    ReservationServlet ..> CourseService : コース一覧取得
+    ReservationService --> ReservationDAO : 重複確認と登録
+    ReservationService --> WorkshopDAO : 残席と存在確認
+    ReservationService --> CourseDAO : コース存在確認
+    ReservationDAO --> DBConnection : 接続取得
+    ReservationDAO ..> ReservationDTO : 生成
