@@ -19,6 +19,7 @@
     <dl class="detail-list">
         <dt>会員</dt><dd>${reservation.memberName}（${reservation.memberEmail}）</dd>
         <dt>ワークショップ</dt><dd>${reservation.workshopTitle}</dd>
+        <dt>コース</dt><dd>${reservation.courseName}</dd>
         <dt>開催日</dt><dd><fmt:formatDate value="${reservation.eventDate}" pattern="yyyy/MM/dd"/></dd>
     </dl>
 

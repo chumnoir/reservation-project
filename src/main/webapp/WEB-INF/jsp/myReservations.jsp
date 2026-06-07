@@ -36,13 +36,14 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ワークショップ</th><th>開催日</th><th>時刻</th><th>人数</th><th>状態</th><th>操作</th>
+                            <th>ワークショップ</th><th>コース</th><th>開催日</th><th>時刻</th><th>人数</th><th>状態</th><th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="r" items="${reservations}">
                             <tr>
                                 <td>${r.workshopTitle}</td>
+                                <td>${r.courseName}</td>
                                 <td><fmt:formatDate value="${r.eventDate}" pattern="yyyy/MM/dd"/></td>
                                 <td><fmt:formatDate value="${r.startTime}" pattern="HH:mm"/></td>
                                 <td>${r.numberOfPeople} 名</td>

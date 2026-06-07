@@ -17,20 +17,23 @@ public class ReservationDAO {
 
     private static final String BASE_SELECT =
             "SELECT r.*, m.name AS member_name, m.email AS member_email, "
-          + "       w.title AS workshop_title, w.event_date, w.start_time "
+          + "       w.title AS workshop_title, w.event_date, w.start_time, "
+          + "       c.name AS course_name "
           + "FROM reservations r "
           + "JOIN members m   ON r.member_id   = m.member_id "
-          + "JOIN workshops w ON r.workshop_id = w.workshop_id ";
+          + "JOIN workshops w ON r.workshop_id = w.workshop_id "
+          + "JOIN courses  c  ON r.course_id   = c.course_id ";
 
-    /** 予約登録 */
+    /** 予約登録(選択コースを含む) */
     public boolean insert(ReservationDTO r) {
-        String sql = "INSERT INTO reservations (member_id, workshop_id, number_of_people, status) "
-                   + "VALUES (?, ?, ?, 'CONFIRMED')";
+        String sql = "INSERT INTO reservations (member_id, workshop_id, course_id, number_of_people, status) "
+                   + "VALUES (?, ?, ?, ?, 'CONFIRMED')";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, r.getMemberId());
             ps.setInt(2, r.getWorkshopId());
-            ps.setInt(3, r.getNumberOfPeople());
+            ps.setInt(3, r.getCourseId());
+            ps.setInt(4, r.getNumberOfPeople());
             return ps.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -160,12 +163,14 @@ public class ReservationDAO {
         r.setReservationId(rs.getInt("reservation_id"));
         r.setMemberId(rs.getInt("member_id"));
         r.setWorkshopId(rs.getInt("workshop_id"));
+        r.setCourseId(rs.getInt("course_id"));
         r.setNumberOfPeople(rs.getInt("number_of_people"));
         r.setStatus(rs.getString("status"));
         r.setReservedAt(rs.getTimestamp("reserved_at"));
         r.setMemberName(rs.getString("member_name"));
         r.setMemberEmail(rs.getString("member_email"));
         r.setWorkshopTitle(rs.getString("workshop_title"));
+        r.setCourseName(rs.getString("course_name"));
         r.setEventDate(rs.getDate("event_date"));
         r.setStartTime(rs.getTime("start_time"));
         return r;

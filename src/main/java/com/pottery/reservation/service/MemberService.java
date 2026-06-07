@@ -2,7 +2,6 @@ package com.pottery.reservation.service;
 
 import com.pottery.reservation.dao.MemberDAO;
 import com.pottery.reservation.dto.MemberDTO;
-import com.pottery.reservation.util.PasswordUtil;
 import com.pottery.reservation.util.ValidationUtil;
 
 import java.util.List;
@@ -15,7 +14,9 @@ public class MemberService {
     private final MemberDAO memberDAO = new MemberDAO();
 
     /**
-     * 会員登録。パスワードはハッシュ化して保存する。
+     * 会員登録。
+     * ※演習用の仕様により、パスワードは平文のまま保存する
+     *   (実運用では必ずハッシュ化すること)。
      * @return 登録成否
      * @throws IllegalArgumentException 入力不備・メール重複時
      */
@@ -24,20 +25,21 @@ public class MemberService {
         if (memberDAO.existsByEmail(member.getEmail())) {
             throw new IllegalArgumentException("このメールアドレスは既に登録されています。");
         }
-        member.setPassword(PasswordUtil.hash(member.getPassword()));
+        // パスワードは平文のまま保存(ハッシュ化しない)
         member.setRole("USER");
         return memberDAO.insert(member);
     }
 
     /**
      * ログイン認証。成功時は会員情報、失敗時はnullを返す。
+     * ※パスワードは平文保存のため、平文どうしを直接比較する。
      */
     public MemberDTO login(String email, String password) {
         if (email == null || password == null) {
             return null;
         }
         MemberDTO member = memberDAO.findByEmail(email.trim());
-        if (member != null && PasswordUtil.matches(password, member.getPassword())) {
+        if (member != null && password.equals(member.getPassword())) {
             return member;
         }
         return null;

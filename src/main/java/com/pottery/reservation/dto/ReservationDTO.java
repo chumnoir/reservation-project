@@ -13,6 +13,7 @@ public class ReservationDTO {
     private int reservationId;
     private int memberId;
     private int workshopId;
+    private int courseId;
     private int numberOfPeople;
     private String status;          // CONFIRMED / CANCELED
     private Timestamp reservedAt;
@@ -21,6 +22,7 @@ public class ReservationDTO {
     private String memberName;
     private String memberEmail;
     private String workshopTitle;
+    private String courseName;
     private Date eventDate;
     private Time startTime;
 
@@ -49,6 +51,14 @@ public class ReservationDTO {
 
     public void setWorkshopId(int workshopId) {
         this.workshopId = workshopId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public int getNumberOfPeople() {
@@ -97,6 +107,14 @@ public class ReservationDTO {
 
     public void setWorkshopTitle(String workshopTitle) {
         this.workshopTitle = workshopTitle;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public Date getEventDate() {

@@ -1,5 +1,6 @@
 package com.pottery.reservation.service;
 
+import com.pottery.reservation.dao.CourseDAO;
 import com.pottery.reservation.dao.ReservationDAO;
 import com.pottery.reservation.dao.WorkshopDAO;
 import com.pottery.reservation.dto.ReservationDTO;
@@ -15,12 +16,14 @@ public class ReservationService {
 
     private final ReservationDAO reservationDAO = new ReservationDAO();
     private final WorkshopDAO workshopDAO = new WorkshopDAO();
+    private final CourseDAO courseDAO = new CourseDAO();
 
     /**
-     * 予約を作成する。
+     * 予約を作成する。選択したコース(courseId)も保存する。
+     * @throws IllegalArgumentException 入力不備・コース未選択時
      * @throws IllegalStateException 重複予約・満席時
      */
-    public boolean reserve(int memberId, int workshopId, int numberOfPeople) {
+    public boolean reserve(int memberId, int workshopId, int courseId, int numberOfPeople) {
         if (numberOfPeople < 1) {
             throw new IllegalArgumentException("予約人数は1名以上を指定してください。");
         }
@@ -28,6 +31,10 @@ public class ReservationService {
         WorkshopDTO workshop = workshopDAO.findById(workshopId);
         if (workshop == null) {
             throw new IllegalStateException("対象のワークショップが見つかりません。");
+        }
+        // コースの存在チェック(未選択・不正値を弾く)
+        if (courseDAO.findById(courseId) == null) {
+            throw new IllegalArgumentException("コースを選択してください。");
         }
         if (reservationDAO.existsReservation(memberId, workshopId)) {
             throw new IllegalStateException("このワークショップは既に予約済みです。");
@@ -39,6 +46,7 @@ public class ReservationService {
         ReservationDTO r = new ReservationDTO();
         r.setMemberId(memberId);
         r.setWorkshopId(workshopId);
+        r.setCourseId(courseId);
         r.setNumberOfPeople(numberOfPeople);
         return reservationDAO.insert(r);
     }

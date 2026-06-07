@@ -38,6 +38,17 @@
 
         <form action="${pageContext.request.contextPath}/user/reserve" method="post" class="reserve-form">
             <input type="hidden" name="workshopId" value="${workshop.workshopId}">
+            <%-- コース選択(必須)。サーバ側でも存在チェックを行う --%>
+            <label>コース
+                <select name="courseId" required>
+                    <option value="" disabled selected>選択してください</option>
+                    <c:forEach var="course" items="${courses}">
+                        <option value="${course.courseId}">
+                            ${course.name}<c:if test="${course.price > 0}">（＋<fmt:formatNumber value="${course.price}" type="number"/>円）</c:if>
+                        </option>
+                    </c:forEach>
+                </select>
+            </label>
             <label>予約人数
                 <select name="numberOfPeople">
                     <c:forEach begin="1" end="${workshop.remainingSeats}" var="i">

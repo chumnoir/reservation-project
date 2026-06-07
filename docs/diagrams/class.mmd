@@ -40,13 +40,17 @@ classDiagram
         +delete(id) boolean
     }
     class ReservationService {
-        +reserve(mId, wId, n) boolean
+        +reserve(mId, wId, cId, n) boolean
         +cancel(rId, mId) void
         +findByMemberId(id) List
     }
     class NoticeService {
         +findAll() List
         +create(NoticeDTO) boolean
+    }
+    class CourseService {
+        +findAll() List
+        +findById(id) CourseDTO
     }
 
     class MemberDAO {
@@ -63,13 +67,18 @@ classDiagram
     class NoticeDAO {
         +insert/update/delete/findAll()
     }
+    class CourseDAO {
+        +findAll() List
+        +findById(id) CourseDTO
+    }
+    class CourseDTO {
+        -int courseId
+        -String name
+        -int price
+    }
 
     class DBConnection {
         +getConnection() Connection$
-    }
-    class PasswordUtil {
-        +hash(s)$ String
-        +matches(p, h)$ boolean
     }
     class ValidationUtil {
         +isEmail(s)$ boolean
@@ -83,23 +92,27 @@ classDiagram
     LoginServlet ..> MemberService
     ReservationServlet ..> ReservationService
     ReservationServlet ..> WorkshopService
+    ReservationServlet ..> CourseService
     NoticeAdminServlet ..> NoticeService
 
     MemberService --> MemberDAO
     WorkshopService --> WorkshopDAO
     ReservationService --> ReservationDAO
     ReservationService --> WorkshopDAO
+    ReservationService --> CourseDAO
     NoticeService --> NoticeDAO
+    CourseService --> CourseDAO
 
-    MemberService ..> PasswordUtil
     MemberService ..> ValidationUtil
 
     MemberDAO --> DBConnection
     WorkshopDAO --> DBConnection
     ReservationDAO --> DBConnection
     NoticeDAO --> DBConnection
+    CourseDAO --> DBConnection
 
     MemberDAO ..> MemberDTO
     WorkshopDAO ..> WorkshopDTO
     ReservationDAO ..> ReservationDTO
     NoticeDAO ..> NoticeDTO
+    CourseDAO ..> CourseDTO

@@ -23,7 +23,7 @@
         <c:otherwise>
             <table class="data-table">
                 <thead>
-                    <tr><th>ID</th><th>会員</th><th>ワークショップ</th><th>開催日</th><th>人数</th><th>状態</th><th>予約日時</th><th>操作</th></tr>
+                    <tr><th>ID</th><th>会員</th><th>ワークショップ</th><th>コース</th><th>開催日</th><th>人数</th><th>状態</th><th>予約日時</th><th>操作</th></tr>
                 </thead>
                 <tbody>
                     <c:forEach var="r" items="${reservations}">
@@ -31,6 +31,7 @@
                             <td>${r.reservationId}</td>
                             <td>${r.memberName}<br><span class="sub">${r.memberEmail}</span></td>
                             <td>${r.workshopTitle}</td>
+                            <td>${r.courseName}</td>
                             <td><fmt:formatDate value="${r.eventDate}" pattern="yyyy/MM/dd"/></td>
                             <td>${r.numberOfPeople} 名</td>
                             <td>

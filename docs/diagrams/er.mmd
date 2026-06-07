@@ -1,13 +1,14 @@
 erDiagram
     MEMBERS ||--o{ RESERVATIONS : "予約する"
     WORKSHOPS ||--o{ RESERVATIONS : "予約される"
+    COURSES ||--o{ RESERVATIONS : "選択される"
     MEMBERS {
         int member_id PK "会員ID"
         varchar name "氏名"
         varchar email UK "メールアドレス"
         varchar phone "電話番号"
         varchar address "住所"
-        varchar password "パスワード(SHA-256)"
+        varchar password "パスワード(平文/演習用)"
         varchar role "USER / ADMIN"
         timestamp created_at "登録日時"
     }
@@ -22,10 +23,18 @@ erDiagram
         int price "参加費"
         timestamp created_at "登録日時"
     }
+    COURSES {
+        int course_id PK "コースID"
+        varchar name "コース名"
+        text description "説明"
+        int price "追加料金"
+        timestamp created_at "登録日時"
+    }
     RESERVATIONS {
         int reservation_id PK "予約ID"
         int member_id FK "会員ID"
         int workshop_id FK "ワークショップID"
+        int course_id FK "コースID"
         int number_of_people "予約人数"
         varchar status "CONFIRMED / CANCELED"
         timestamp reserved_at "予約日時"

@@ -3,6 +3,7 @@ package com.pottery.reservation.servlet;
 import com.pottery.reservation.dto.MemberDTO;
 import com.pottery.reservation.dto.ReservationDTO;
 import com.pottery.reservation.dto.WorkshopDTO;
+import com.pottery.reservation.service.CourseService;
 import com.pottery.reservation.service.ReservationService;
 import com.pottery.reservation.service.WorkshopService;
 
@@ -27,6 +28,7 @@ public class ReservationServlet extends HttpServlet {
 
     private final ReservationService reservationService = new ReservationService();
     private final WorkshopService workshopService = new WorkshopService();
+    private final CourseService courseService = new CourseService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -51,6 +53,8 @@ public class ReservationServlet extends HttpServlet {
             return;
         }
         req.setAttribute("workshop", workshop);
+        // 予約時に選択できるコース一覧を渡す
+        req.setAttribute("courses", courseService.findAll());
         req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp").forward(req, resp);
     }
 
@@ -78,15 +82,18 @@ public class ReservationServlet extends HttpServlet {
 
         // --- 予約確定 ---
         int workshopId = parseInt(req.getParameter("workshopId"), -1);
+        int courseId = parseInt(req.getParameter("courseId"), -1);
         int people = parseInt(req.getParameter("numberOfPeople"), 1);
 
         try {
-            reservationService.reserve(member.getMemberId(), workshopId, people);
+            reservationService.reserve(member.getMemberId(), workshopId, courseId, people);
             session.setAttribute("flash", "予約が完了しました。");
             resp.sendRedirect(req.getContextPath() + "/user/reserve?action=mylist");
         } catch (IllegalArgumentException | IllegalStateException e) {
+            // エラー時は確認画面を再表示(ワークショップ・コース一覧を再設定)
             WorkshopDTO workshop = workshopService.findById(workshopId);
             req.setAttribute("workshop", workshop);
+            req.setAttribute("courses", courseService.findAll());
             req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp").forward(req, resp);
         }
