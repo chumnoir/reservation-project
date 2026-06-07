@@ -1,0 +1,61 @@
+/* =====================================================================
+   管理画面 専用スタイル (style.css を読み込んだ上で追加適用)
+   ===================================================================== */
+
+:root {
+    --admin-bg:   #2c3338;
+    --admin-dark: #1f2429;
+    --admin-acc:  #3f8f6b;
+}
+
+body.admin { background: #eef0f2; }
+
+body.admin-auth {
+    background: linear-gradient(135deg, #3a4248, #1f2429);
+}
+
+/* ---------- 管理ヘッダー ---------- */
+.admin-header { background: var(--admin-dark); color: #fff; }
+.admin-header-inner {
+    max-width: 1180px; margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.admin-logo { font-size: 18px; margin: 0; }
+.admin-logo a { color: #fff; }
+.admin-nav { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.admin-nav a { color: #cdd5db; font-size: 14px; }
+.admin-nav a:hover { color: #fff; }
+.admin-user { color: var(--admin-acc); font-weight: 700; font-size: 14px; }
+
+/* ---------- コンテナ ---------- */
+.admin-container { max-width: 1180px; margin: 28px auto; padding: 0 20px; }
+.admin-container.narrow { max-width: 640px; }
+.admin-title { color: var(--admin-dark); font-size: 22px; margin: 0 0 6px; }
+.admin-lead { color: #6b7177; margin: 0 0 20px; }
+.admin-page-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+
+/* ---------- ダッシュボード統計 ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+}
+.stat-card {
+    background: #fff; border-radius: 12px; padding: 24px;
+    text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.stat-num { font-size: 40px; font-weight: 800; color: var(--admin-acc); line-height: 1; }
+.stat-label { color: #6b7177; font-size: 15px; }
+
+/* ---------- 管理用フォーム / テーブルは style.css を踏襲 ---------- */
+body.admin .data-table { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+body.admin .data-table th { background: #e6eaed; }
+
+.admin-form {
+    background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.form-row { display: flex; gap: 16px; }
+.form-row label { flex: 1; }
+
+.badge-admin { background: #fff3cd; color: #8a6d3b; }

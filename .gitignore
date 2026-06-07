@@ -1,0 +1,25 @@
+# --- Maven build artifacts ---
+target/
+*.war
+*.class
+
+# --- IDE / editor ---
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+*.swp
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- logs / temp ---
+*.log
+*.tmp
+
+# --- local DB data / dev tools (should never be committed) ---
+pgdata/
+devtools/

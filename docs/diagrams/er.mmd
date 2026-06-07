@@ -1,0 +1,39 @@
+erDiagram
+    MEMBERS ||--o{ RESERVATIONS : "予約する"
+    WORKSHOPS ||--o{ RESERVATIONS : "予約される"
+    MEMBERS {
+        int member_id PK "会員ID"
+        varchar name "氏名"
+        varchar email UK "メールアドレス"
+        varchar phone "電話番号"
+        varchar address "住所"
+        varchar password "パスワード(SHA-256)"
+        varchar role "USER / ADMIN"
+        timestamp created_at "登録日時"
+    }
+    WORKSHOPS {
+        int workshop_id PK "ワークショップID"
+        varchar title "タイトル"
+        text description "説明"
+        varchar instructor "講師名"
+        date event_date "開催日"
+        time start_time "開始時刻"
+        int capacity "定員"
+        int price "参加費"
+        timestamp created_at "登録日時"
+    }
+    RESERVATIONS {
+        int reservation_id PK "予約ID"
+        int member_id FK "会員ID"
+        int workshop_id FK "ワークショップID"
+        int number_of_people "予約人数"
+        varchar status "CONFIRMED / CANCELED"
+        timestamp reserved_at "予約日時"
+    }
+    NOTICES {
+        int notice_id PK "お知らせID"
+        varchar title "タイトル"
+        text content "本文"
+        timestamp created_at "作成日時"
+        timestamp updated_at "更新日時"
+    }

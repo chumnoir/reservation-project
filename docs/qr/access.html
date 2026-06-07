@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陶芸WS予約システム アクセス用QR</title>
+<style>
+  body { font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+         background:#faf6f0; color:#3a322b; margin:0; padding:32px; text-align:center; }
+  h1 { color:#8c4a13; }
+  .cards { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; margin-top:24px; }
+  .card { background:#fff; border-radius:14px; padding:24px 28px; box-shadow:0 2px 12px rgba(0,0,0,.08); width:340px; }
+  .card h2 { margin:0 0 6px; font-size:18px; color:#b5651d; }
+  .card p.sub { margin:0 0 16px; color:#6a5d4f; font-size:13px; }
+  .card img { width:280px; height:280px; image-rendering: pixelated; }
+  .url { margin-top:14px; font-size:12px; word-break:break-all; color:#444;
+         background:#f1ebe0; padding:8px 10px; border-radius:6px; }
+  .accounts { margin-top:28px; font-size:14px; color:#6a5d4f; }
+  code { background:#eee; padding:2px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+  <h1>陶芸体験ワークショップ 予約システム</h1>
+  <p>スマホのカメラでQRコードを読み取ってアクセスしてください。</p>
+
+  <div class="cards">
+    <div class="card">
+      <h2>① 同じWi-Fiから</h2>
+      <p class="sub">このMacと同一ネットワークの端末向け（高速）</p>
+      <img src="qr_lan.png" alt="LAN用QR">
+      <div class="url">http://192.168.11.2:8080/reservation/</div>
+    </div>
+
+    <div class="card">
+      <h2>② どこからでも（トンネル）</h2>
+      <p class="sub">モバイル回線・別ネットワークでもOK（HTTPS）</p>
+      <img src="qr_tunnel.png" alt="トンネル用QR">
+      <div class="url">https://gates-ada-mpg-enhancing.trycloudflare.com/reservation/</div>
+    </div>
+  </div>
+
+  <div class="accounts">
+    <p>テスト用アカウント</p>
+    <p>一般会員: <code>taro@example.com</code> / <code>user123</code><br>
+       管理者: <code>admin@pottery.com</code> / <code>admin123</code>（<code>/admin/login</code>）</p>
+  </div>
+</body>
+</html>

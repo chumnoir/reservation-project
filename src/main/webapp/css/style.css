@@ -1,0 +1,218 @@
+/* =====================================================================
+   陶芸体験ワークショップ予約システム  共通スタイル
+   ===================================================================== */
+
+:root {
+    --clay:        #b5651d;   /* 陶土のブラウン */
+    --clay-dark:   #8c4a13;
+    --clay-light:  #d9a066;
+    --cream:       #faf6f0;
+    --ink:         #3a322b;
+    --line:        #e3dacb;
+    --ok:          #2e7d4f;
+    --danger:      #c0392b;
+    --shadow:      0 2px 10px rgba(0,0,0,.06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+}
+
+a { color: var(--clay-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- ボタン ---------- */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #e7e0d4;
+    color: var(--ink);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: opacity .15s;
+}
+.btn:hover { opacity: .85; text-decoration: none; }
+.btn-primary { background: var(--clay); color: #fff; }
+.btn-outline { background: transparent; border: 1px solid var(--clay); color: var(--clay-dark); }
+.btn-danger  { background: var(--danger); color: #fff; }
+.btn-sm      { padding: 5px 12px; font-size: 12px; }
+.btn-block   { display: block; width: 100%; }
+.btn:disabled { background: #ccc; color: #fff; cursor: not-allowed; }
+
+/* ---------- ランディング ---------- */
+body.landing {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--clay-light), var(--clay-dark));
+}
+.landing-box {
+    background: var(--cream);
+    padding: 48px 40px;
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    max-width: 440px;
+}
+.landing-box h1 { color: var(--clay-dark); margin-bottom: 8px; }
+.lead { color: #6a5d4f; margin-bottom: 28px; }
+.landing-actions { display: flex; gap: 12px; justify-content: center; }
+.landing-admin { margin-top: 24px; font-size: 13px; }
+
+/* ---------- 認証フォーム ---------- */
+body.auth {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 20px;
+}
+.auth-box {
+    background: #fff;
+    padding: 36px 32px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%; max-width: 420px;
+}
+.auth-box h1 { text-align: center; color: var(--clay-dark); margin-bottom: 6px; }
+.auth-sub { text-align: center; color: #998; font-size: 13px; margin-bottom: 20px; }
+.auth-link { text-align: center; margin-top: 18px; font-size: 14px; }
+
+label { display: block; margin-bottom: 16px; font-size: 14px; font-weight: 600; }
+input, textarea, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 400;
+    background: #fff;
+}
+input:focus, textarea:focus, select:focus {
+    outline: none; border-color: var(--clay);
+}
+textarea { resize: vertical; }
+
+/* ---------- アラート ---------- */
+.alert { padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; }
+.alert-error   { background: #fdecea; color: var(--danger); border: 1px solid #f5c6cb; }
+.alert-success { background: #e9f7ef; color: var(--ok); border: 1px solid #c3e6cb; }
+
+/* ---------- ヘッダー ---------- */
+.site-header { background: var(--clay-dark); color: #fff; }
+.site-header-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.site-title { font-size: 20px; margin: 0; }
+.site-title a { color: #fff; }
+.site-nav { display: flex; align-items: center; gap: 16px; }
+.site-nav a { color: #fff; font-size: 14px; }
+.welcome { font-size: 14px; opacity: .9; }
+
+/* ---------- コンテナ ---------- */
+.container { max-width: 1080px; margin: 24px auto; padding: 0 20px; }
+.container.narrow { max-width: 640px; }
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+}
+.section-title {
+    font-size: 18px; color: var(--clay-dark);
+    border-left: 5px solid var(--clay); padding-left: 12px;
+    margin: 0 0 18px;
+}
+.empty { color: #998; padding: 12px 0; }
+
+/* ---------- お知らせ ---------- */
+.notice-list { list-style: none; margin: 0; padding: 0; }
+.notice-list li { padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.notice-list li:last-child { border-bottom: none; }
+.notice-date { color: var(--clay); font-size: 13px; margin-right: 12px; }
+.notice-title { font-weight: 700; }
+.notice-content { margin: 6px 0 0; color: #6a5d4f; font-size: 14px; }
+
+/* ---------- カレンダー ---------- */
+.calendar-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.calendar-nav { display: flex; align-items: center; gap: 12px; }
+.calendar-current { font-weight: 700; color: var(--clay-dark); }
+.calendar { width: 100%; border-collapse: collapse; margin-top: 14px; table-layout: fixed; }
+.calendar th {
+    background: #f1ebe0; padding: 8px; font-size: 13px; border: 1px solid var(--line);
+}
+.calendar th.sun, .calendar td:first-child .day-number { color: #c0392b; }
+.calendar th.sat { color: #2c6fb5; }
+.calendar td {
+    border: 1px solid var(--line);
+    vertical-align: top;
+    height: 84px; padding: 4px;
+}
+.calendar td.empty-cell { background: #faf7f2; }
+.day-number { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.cal-event {
+    display: block;
+    background: var(--clay-light);
+    color: #4a3411;
+    font-size: 11px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.cal-event:hover { background: var(--clay); color: #fff; text-decoration: none; }
+.cal-event.full { background: #cfc6bb; color: #6b6258; }
+.cal-legend { margin-top: 10px; font-size: 12px; color: #888; }
+.cal-event.sample { display: inline-block; margin: 0 4px; padding: 1px 8px; }
+
+/* ---------- ワークショップカード ---------- */
+.workshop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+.workshop-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex; flex-direction: column;
+}
+.workshop-card h3 { margin: 0 0 8px; color: var(--clay-dark); font-size: 16px; }
+.workshop-meta { color: var(--clay); font-size: 13px; margin: 0 0 8px; }
+.workshop-desc { font-size: 14px; color: #6a5d4f; flex-grow: 1; }
+.workshop-detail { list-style: none; padding: 0; margin: 12px 0; font-size: 13px; }
+.workshop-detail li { padding: 2px 0; }
+.badge-full { color: var(--danger); font-weight: 700; }
+
+/* ---------- 詳細リスト ---------- */
+.detail-list { display: grid; grid-template-columns: 120px 1fr; gap: 8px 16px; margin-bottom: 20px; }
+.detail-list dt { font-weight: 700; color: #6a5d4f; }
+.detail-list dd { margin: 0; }
+
+.reserve-form { border-top: 1px solid var(--line); padding-top: 18px; }
+.form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
+
+/* ---------- テーブル ---------- */
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table th, .data-table td {
+    border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left;
+}
+.data-table th { background: #f1ebe0; color: #6a5d4f; }
+.data-table .sub { color: #998; font-size: 12px; }
+.actions { white-space: nowrap; }
+
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; background: #eee; }
+.badge-ok { background: #e9f7ef; color: var(--ok); }
+.badge-cancel { background: #fdecea; color: var(--danger); }
+
+/* ---------- フッター ---------- */
+.site-footer { text-align: center; padding: 20px; color: #998; font-size: 13px; }

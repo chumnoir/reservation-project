@@ -1,0 +1,105 @@
+classDiagram
+    direction LR
+
+    class MemberDTO {
+        -int memberId
+        -String name
+        -String email
+        -String role
+        +isAdmin() boolean
+    }
+    class WorkshopDTO {
+        -int workshopId
+        -String title
+        -Date eventDate
+        -int capacity
+        +getRemainingSeats() int
+        +isFull() boolean
+    }
+    class ReservationDTO {
+        -int reservationId
+        -int memberId
+        -int workshopId
+        -String status
+    }
+    class NoticeDTO {
+        -int noticeId
+        -String title
+        -String content
+    }
+
+    class MemberService {
+        +register(MemberDTO) boolean
+        +login(email, pw) MemberDTO
+        +delete(id) boolean
+    }
+    class WorkshopService {
+        +findAll() List
+        +create(WorkshopDTO) boolean
+        +update(WorkshopDTO) boolean
+        +delete(id) boolean
+    }
+    class ReservationService {
+        +reserve(mId, wId, n) boolean
+        +cancel(rId, mId) void
+        +findByMemberId(id) List
+    }
+    class NoticeService {
+        +findAll() List
+        +create(NoticeDTO) boolean
+    }
+
+    class MemberDAO {
+        +insert/find/delete()
+    }
+    class WorkshopDAO {
+        +insert/update/delete/findAll()
+    }
+    class ReservationDAO {
+        +insert()
+        +cancelByMember(rId, mId)
+        +findByMemberId(id)
+    }
+    class NoticeDAO {
+        +insert/update/delete/findAll()
+    }
+
+    class DBConnection {
+        +getConnection() Connection$
+    }
+    class PasswordUtil {
+        +hash(s)$ String
+        +matches(p, h)$ boolean
+    }
+    class ValidationUtil {
+        +isEmail(s)$ boolean
+        +isPhone(s)$ boolean
+    }
+
+    class LoginServlet
+    class ReservationServlet
+    class NoticeAdminServlet
+
+    LoginServlet ..> MemberService
+    ReservationServlet ..> ReservationService
+    ReservationServlet ..> WorkshopService
+    NoticeAdminServlet ..> NoticeService
+
+    MemberService --> MemberDAO
+    WorkshopService --> WorkshopDAO
+    ReservationService --> ReservationDAO
+    ReservationService --> WorkshopDAO
+    NoticeService --> NoticeDAO
+
+    MemberService ..> PasswordUtil
+    MemberService ..> ValidationUtil
+
+    MemberDAO --> DBConnection
+    WorkshopDAO --> DBConnection
+    ReservationDAO --> DBConnection
+    NoticeDAO --> DBConnection
+
+    MemberDAO ..> MemberDTO
+    WorkshopDAO ..> WorkshopDTO
+    ReservationDAO ..> ReservationDTO
+    NoticeDAO ..> NoticeDTO
