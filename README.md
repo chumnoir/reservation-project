@@ -1,5 +1,7 @@
 # 陶芸体験ワークショップ Web予約システム
 
+🌐 **日本語** | [English](README.en.md)
+
 HTML / CSS / Servlet / JSP を用いた、陶芸体験ワークショップの予約システムです。
 **DAO / DTO / Service / Servlet / JSP** によるMVCモデルで構成しています。
 
@@ -79,8 +81,9 @@ com.pottery.reservation
 ├── service/    MemberService, WorkshopService, ReservationService, NoticeService
 ├── servlet/    Register/Login/Logout/Main/Reservation Servlet
 │   └── admin/  AdminLogin/Logout/Dashboard + Notice/Workshop/Reservation/Member Admin
+├── combined/   Service統合版（combined.servlet / combined.filter）
 ├── filter/     EncodingFilter, AuthFilter, AdminAuthFilter
-└── util/       DBConnection, PasswordUtil, ValidationUtil
+└── util/       DBConnection, ValidationUtil
 ```
 
 ---
