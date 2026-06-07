@@ -15,9 +15,9 @@
             <a class="btn btn-primary" href="${pageContext.request.contextPath}/login">ログイン</a>
             <a class="btn btn-outline" href="${pageContext.request.contextPath}/register">新規会員登録</a>
         </div>
-        <p class="landing-admin">
-            <a href="${pageContext.request.contextPath}/admin/login">管理者の方はこちら</a>
-        </p>
+        <%-- 管理者画面への導線は一般利用者ページには載せない。
+             管理者は別URL(/admin/login)へ直接アクセスし、かつ許可IP(店舗端末)
+             からのみ到達できる(AdminAuthFilterのIP許可リストで制御)。 --%>
     </div>
 </body>
 </html>
