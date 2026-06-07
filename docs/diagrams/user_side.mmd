@@ -1,0 +1,109 @@
+---
+title: ユーザー側 クラス図（フィルタ・Service・DAO）
+---
+classDiagram
+    direction TB
+    class EncodingFilter {
+        +doFilter(req, res, chain)
+    }
+    class AuthFilter {
+        +doFilter(req, res, chain)
+    }
+    note for EncodingFilter "@WebFilter(/*)  全リクエストに適用しUTF-8へ"
+    note for AuthFilter "@WebFilter(/user/*)  loginMember未設定なら/loginへ"
+
+    class RegisterServlet {
+        +doGet() フォーム表示
+        +doPost() 登録
+    }
+    class LoginServlet {
+        +doGet() フォーム表示
+        +doPost() 認証
+    }
+    class LogoutServlet {
+        +doGet() セッション破棄
+    }
+    class MainServlet {
+        +doGet() 一覧とカレンダー
+    }
+    class ReservationServlet {
+        +doGet() 確認画面/マイ予約
+        +doPost() 予約確定/キャンセル
+    }
+
+    class MemberService {
+        +register(MemberDTO) boolean
+        +login(email, pw) MemberDTO
+    }
+    class WorkshopService {
+        +findAll() List
+        +findById(id) WorkshopDTO
+    }
+    class NoticeService {
+        +findAll() List
+    }
+    class CourseService {
+        +findAll() List
+    }
+    class ReservationService {
+        +reserve(mId, wId, cId, n) boolean
+        +cancel(rId, mId) void
+        +findByMemberId(mId) List
+    }
+
+    class MemberDAO {
+        +findByEmail(email)
+        +existsByEmail(email)
+        +insert(MemberDTO)
+    }
+    class WorkshopDAO {
+        +findAll()
+        +findById(id)
+    }
+    class NoticeDAO {
+        +findAll()
+    }
+    class CourseDAO {
+        +findAll()
+        +findById(id)
+    }
+    class ReservationDAO {
+        +insert(ReservationDTO)
+        +findByMemberId(mId)
+        +existsReservation(mId, wId)
+        +cancelByMember(rId, mId)
+    }
+    class ValidationUtil {
+        +isEmail(s)$
+        +isPhone(s)$
+    }
+    class DBConnection {
+        +getConnection()$
+    }
+
+    EncodingFilter ..> AuthFilter : チェーン
+    AuthFilter ..> MainServlet : 認証OKで通過
+    AuthFilter ..> ReservationServlet : 認証OKで通過
+
+    RegisterServlet ..> MemberService
+    LoginServlet ..> MemberService
+    MainServlet ..> WorkshopService
+    MainServlet ..> NoticeService
+    ReservationServlet ..> ReservationService
+    ReservationServlet ..> WorkshopService
+    ReservationServlet ..> CourseService
+
+    MemberService ..> ValidationUtil
+    MemberService --> MemberDAO
+    WorkshopService --> WorkshopDAO
+    NoticeService --> NoticeDAO
+    CourseService --> CourseDAO
+    ReservationService --> ReservationDAO
+    ReservationService --> WorkshopDAO
+    ReservationService --> CourseDAO
+
+    MemberDAO --> DBConnection
+    WorkshopDAO --> DBConnection
+    NoticeDAO --> DBConnection
+    CourseDAO --> DBConnection
+    ReservationDAO --> DBConnection

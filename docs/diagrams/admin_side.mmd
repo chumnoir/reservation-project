@@ -1,0 +1,93 @@
+---
+title: 管理者側 クラス図（フィルタ・Service・DAO）
+---
+classDiagram
+    direction TB
+    class EncodingFilter {
+        +doFilter(req, res, chain)
+    }
+    class AdminAuthFilter {
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for EncodingFilter "@WebFilter(/*)  全リクエストをUTF-8へ"
+    note for AdminAuthFilter "@WebFilter(/admin/*)  1.IP許可リスト→外は404  2.loginAdmin確認"
+
+    class AdminLoginServlet {
+        +doGet() フォーム表示
+        +doPost() 管理者認証
+    }
+    class AdminLogoutServlet {
+        +doGet() セッション破棄
+    }
+    class AdminDashboardServlet {
+        +doGet() 件数サマリ
+    }
+    class NoticeAdminServlet {
+        +doGet() 一覧/フォーム
+        +doPost() 追加/編集/削除
+    }
+    class WorkshopAdminServlet {
+        +doGet() 一覧/フォーム
+        +doPost() 追加/編集/削除
+    }
+    class ReservationAdminServlet {
+        +doGet() 一覧/編集
+        +doPost() 更新/削除
+    }
+    class MemberAdminServlet {
+        +doGet() 一覧
+        +doPost() 削除
+    }
+
+    class NoticeService {
+        +findAll() +findById()
+        +create() +update() +delete()
+    }
+    class WorkshopService {
+        +findAll() +findById()
+        +create() +update() +delete()
+    }
+    class ReservationService {
+        +findAll() +findById()
+        +update() +delete()
+    }
+    class MemberService {
+        +login(email, pw) MemberDTO
+        +findAll() +delete()
+    }
+
+    class NoticeDAO
+    class WorkshopDAO
+    class ReservationDAO
+    class MemberDAO
+    class DBConnection {
+        +getConnection()$
+    }
+
+    EncodingFilter ..> AdminAuthFilter : チェーン
+    AdminAuthFilter ..> AdminLoginServlet : IP許可で通過
+    AdminAuthFilter ..> AdminDashboardServlet : 認証OKで通過
+    AdminAuthFilter ..> NoticeAdminServlet : 認証OKで通過
+    AdminAuthFilter ..> WorkshopAdminServlet : 認証OKで通過
+    AdminAuthFilter ..> ReservationAdminServlet : 認証OKで通過
+    AdminAuthFilter ..> MemberAdminServlet : 認証OKで通過
+
+    AdminLoginServlet ..> MemberService
+    AdminDashboardServlet ..> NoticeService
+    AdminDashboardServlet ..> WorkshopService
+    AdminDashboardServlet ..> ReservationService
+    AdminDashboardServlet ..> MemberService
+    NoticeAdminServlet ..> NoticeService
+    WorkshopAdminServlet ..> WorkshopService
+    ReservationAdminServlet ..> ReservationService
+    MemberAdminServlet ..> MemberService
+
+    NoticeService --> NoticeDAO
+    WorkshopService --> WorkshopDAO
+    ReservationService --> ReservationDAO
+    MemberService --> MemberDAO
+    NoticeDAO --> DBConnection
+    WorkshopDAO --> DBConnection
+    ReservationDAO --> DBConnection
+    MemberDAO --> DBConnection

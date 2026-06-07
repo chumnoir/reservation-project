@@ -1,0 +1,26 @@
+---
+title: フィルタの動作（リクエスト処理の流れ）
+---
+flowchart TD
+    R([ブラウザのリクエスト]) --> EF["EncodingFilter (/*)<br/>文字コードをUTF-8に設定<br/>chain.doFilter で次へ"]
+    EF --> P{URLパターン判定}
+
+    P -->|"/login /register /logout など"| SV0["対象Servlet<br/>(フィルタ認証なし)"]
+
+    P -->|"/user/*"| AF["AuthFilter<br/>セッションの loginMember を確認"]
+    AF -->|あり| SVU["ユーザーServlet<br/>doGet / doPost"]
+    AF -->|なし| RL["/login?error=session へリダイレクト"]
+
+    P -->|"/admin/*"| IP{"送信元IPは<br/>ADMIN_ALLOWED_IPS 内?"}
+    IP -->|いいえ| E404["404 Not Found<br/>(管理画面の存在を隠蔽)"]
+    IP -->|はい| AL{"パスは /admin/login ?"}
+    AL -->|はい| SVAL["AdminLoginServlet<br/>(認証は不要)"]
+    AL -->|いいえ| AC{"loginAdmin あり<br/>かつ role=ADMIN ?"}
+    AC -->|はい| SVA["管理Servlet<br/>doGet / doPost"]
+    AC -->|いいえ| RAL["/admin/login?error=session へリダイレクト"]
+
+    SV0 --> SVC
+    SVU --> SVC["Service層<br/>(業務ロジック・検証)"]
+    SVA --> SVC
+    SVC --> DAO["DAO層<br/>(SQL実行)"]
+    DAO --> DB[("PostgreSQL")]
