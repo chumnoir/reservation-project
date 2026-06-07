@@ -1,0 +1,68 @@
+---
+title: ログイン / ログアウト 機能 クラス図（JSP含む）
+---
+classDiagram
+    direction LR
+    class login_jsp["login.jsp"] {
+        <<JSP>>
+        +inputForm() email_password
+        +showMessages() registered_loggedout_error
+    }
+    note for login_jsp "form action=/login method=post"
+
+    class LoginServlet {
+        -MemberService memberService
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class LogoutServlet {
+        +doGet(req, resp)
+    }
+    class MemberService {
+        -MemberDAO memberDAO
+        +register(MemberDTO) boolean
+        +login(email, pw) MemberDTO
+        +findAll() List
+        +findById(id) MemberDTO
+        +delete(id) boolean
+        -validateForRegister(MemberDTO)
+    }
+    class MemberDAO {
+        +insert(MemberDTO) boolean
+        +findByEmail(email) MemberDTO
+        +findById(id) MemberDTO
+        +existsByEmail(email) boolean
+        +findAll() List
+        +delete(id) boolean
+        -mapRow(rs) MemberDTO
+    }
+    class MemberDTO {
+        -int memberId
+        -String name
+        -String email
+        -String phone
+        -String address
+        -String password
+        -String role
+        -Timestamp createdAt
+        +isAdmin() boolean
+        +getterSetter() 全フィールド分
+    }
+    class HttpSession {
+        <<jakarta.servlet>>
+        +setAttribute(loginMember, MemberDTO)
+        +removeAttribute(loginMember)
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    LoginServlet ..> login_jsp : forward 表示
+    login_jsp ..> LoginServlet : POST 送信
+    LoginServlet ..> MemberService : login
+    MemberService --> MemberDAO : findByEmail
+    MemberService ..> MemberDTO : 平文パスワード比較
+    LoginServlet ..> HttpSession : loginMember 保存
+    LogoutServlet ..> HttpSession : loginMember 破棄
+    MemberDAO --> DBConnection : 接続取得
+    MemberDAO ..> MemberDTO : マッピング

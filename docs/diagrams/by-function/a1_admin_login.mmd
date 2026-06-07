@@ -1,0 +1,71 @@
+---
+title: 管理者ログイン 機能 クラス図（フィルタ・JSP含む）
+---
+classDiagram
+    direction LR
+    class adminLogin_jsp["admin/adminLogin.jsp"] {
+        <<JSP>>
+        +inputForm() email_password
+        +showMessages() error_loggedout
+    }
+    note for adminLogin_jsp "form action=/admin/login method=post"
+
+    class AdminAuthFilter {
+        -List allowedIps
+        +init(config)
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "1.IP許可リスト 外は404  2./admin/login は認証除外  3.loginAdmin確認"
+
+    class AdminLoginServlet {
+        -MemberService memberService
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class MemberService {
+        -MemberDAO memberDAO
+        +login(email, pw) MemberDTO
+        +register(MemberDTO) boolean
+        +findAll() List
+        +findById(id) MemberDTO
+        +delete(id) boolean
+        -validateForRegister(MemberDTO)
+    }
+    class MemberDAO {
+        +findByEmail(email) MemberDTO
+        +findById(id) MemberDTO
+        +insert(MemberDTO) boolean
+        +existsByEmail(email) boolean
+        +findAll() List
+        +delete(id) boolean
+        -mapRow(rs) MemberDTO
+    }
+    class MemberDTO {
+        -int memberId
+        -String name
+        -String email
+        -String phone
+        -String address
+        -String password
+        -String role
+        -Timestamp createdAt
+        +isAdmin() boolean
+        +getterSetter() 全フィールド分
+    }
+    class HttpSession {
+        <<jakarta.servlet>>
+        +setAttribute(loginAdmin, MemberDTO)
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    AdminAuthFilter ..> AdminLoginServlet : IP許可で通過
+    AdminLoginServlet ..> adminLogin_jsp : forward 表示
+    adminLogin_jsp ..> AdminLoginServlet : POST 送信
+    AdminLoginServlet ..> MemberService : login
+    AdminLoginServlet ..> HttpSession : loginAdmin 保存(role=ADMINのみ)
+    MemberService --> MemberDAO : findByEmail
+    MemberDAO --> DBConnection
+    MemberDAO ..> MemberDTO : マッピング

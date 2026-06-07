@@ -1,0 +1,41 @@
+---
+title: 予約キャンセル 機能 クラス図（JSP含む）
+---
+classDiagram
+    direction LR
+    class myReservations_jsp["myReservations.jsp"] {
+        <<JSP>>
+        +reservationTable() reservations属性
+        +cancelForm() action=cancel reservationId
+    }
+    note for myReservations_jsp "確定状態の予約のみキャンセルボタンを表示・確認ダイアログ"
+
+    class ReservationServlet {
+        -ReservationService reservationService
+        -WorkshopService workshopService
+        -CourseService courseService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -parseInt(s, def) int
+    }
+    class ReservationService {
+        -ReservationDAO reservationDAO
+        -WorkshopDAO workshopDAO
+        -CourseDAO courseDAO
+        +cancel(rId, mId) void
+        +findByMemberId(mId) List
+    }
+    class ReservationDAO {
+        +cancelByMember(rId, mId) boolean
+        +findByMemberId(mId) List
+        -mapRow(rs) ReservationDTO
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    myReservations_jsp ..> ReservationServlet : POST action=cancel
+    ReservationServlet ..> ReservationService : cancel
+    ReservationService --> ReservationDAO : cancelByMember
+    ReservationDAO --> DBConnection : 本人かつ確定のみ更新
+    ReservationServlet ..> myReservations_jsp : 一覧へ戻る forward

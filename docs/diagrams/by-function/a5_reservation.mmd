@@ -1,0 +1,79 @@
+---
+title: 予約管理 機能 クラス図（フィルタ・JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class reservationManage_jsp["admin/reservationManage.jsp"] {
+        <<JSP>>
+        +reservationTable() reservations属性
+        +editLink_deleteForm()
+    }
+    class reservationForm_jsp["admin/reservationForm.jsp"] {
+        <<JSP>>
+        +detailList() 会員_WS_コース_開催日
+        +form() numberOfPeople_status 更新
+    }
+    class AdminAuthFilter {
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "IP許可リスト + loginAdmin 認証"
+
+    class ReservationAdminServlet {
+        -ReservationService reservationService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -parseInt(s, def) int
+    }
+    class ReservationService {
+        -ReservationDAO reservationDAO
+        -WorkshopDAO workshopDAO
+        -CourseDAO courseDAO
+        +findAll() List
+        +findById(rId) ReservationDTO
+        +update(ReservationDTO) boolean
+        +delete(rId) boolean
+        +reserve(mId, wId, cId, n) boolean
+        +cancel(rId, mId) void
+        +findByMemberId(mId) List
+    }
+    class ReservationDAO {
+        +findAll() List
+        +findById(rId) ReservationDTO
+        +update(ReservationDTO) boolean
+        +delete(rId) boolean
+        +insert(ReservationDTO) boolean
+        +findByMemberId(mId) List
+        +existsReservation(mId, wId) boolean
+        +cancelByMember(rId, mId) boolean
+        -mapRow(rs) ReservationDTO
+    }
+    class ReservationDTO {
+        -int reservationId
+        -int memberId
+        -int workshopId
+        -int courseId
+        -int numberOfPeople
+        -String status
+        -Timestamp reservedAt
+        -String memberName
+        -String memberEmail
+        -String workshopTitle
+        -String courseName
+        -Date eventDate
+        -Time startTime
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    AdminAuthFilter ..> ReservationAdminServlet : 認証OKで通過
+    ReservationAdminServlet ..> reservationManage_jsp : 一覧 forward
+    ReservationAdminServlet ..> reservationForm_jsp : 編集 forward
+    reservationManage_jsp ..> ReservationAdminServlet : POST delete
+    reservationForm_jsp ..> ReservationAdminServlet : POST update
+    ReservationAdminServlet ..> ReservationService : findAll/update/delete
+    ReservationService --> ReservationDAO
+    ReservationDAO --> DBConnection
+    ReservationDAO ..> ReservationDTO : マッピング(JOINで会員/WS/コース名)

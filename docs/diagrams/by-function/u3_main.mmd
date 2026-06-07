@@ -1,0 +1,88 @@
+---
+title: メイン表示 機能 クラス図（JSP含む）
+---
+classDiagram
+    direction LR
+    class main_jsp["main.jsp"] {
+        <<JSP>>
+        +noticeList() notices属性
+        +calendar() calYear_calMonth_daysInMonth_firstDayOffset
+        +workshopList() workshops属性
+    }
+    note for main_jsp "ワークショップ詳細・カレンダー・お知らせを表示。各WSから予約へ遷移"
+
+    class MainServlet {
+        -WorkshopService workshopService
+        -NoticeService noticeService
+        +doGet(req, resp)
+    }
+    class WorkshopService {
+        -WorkshopDAO workshopDAO
+        +findAll() List
+        +findById(id) WorkshopDTO
+        +create(WorkshopDTO) boolean
+        +update(WorkshopDTO) boolean
+        +delete(id) boolean
+        -validate(WorkshopDTO)
+    }
+    class NoticeService {
+        -NoticeDAO noticeDAO
+        +findAll() List
+        +findById(id) NoticeDTO
+        +create(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+        -validate(NoticeDTO)
+    }
+    class WorkshopDAO {
+        +findAll() List
+        +findById(id) WorkshopDTO
+        +insert(WorkshopDTO) boolean
+        +update(WorkshopDTO) boolean
+        +delete(id) boolean
+        -mapRow(rs) WorkshopDTO
+    }
+    class NoticeDAO {
+        +findAll() List
+        +findById(id) NoticeDTO
+        +insert(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+        -mapRow(rs) NoticeDTO
+    }
+    class WorkshopDTO {
+        -int workshopId
+        -String title
+        -String description
+        -String instructor
+        -Date eventDate
+        -Time startTime
+        -int capacity
+        -int price
+        -Timestamp createdAt
+        -int reservedCount
+        +getRemainingSeats() int
+        +isFull() boolean
+        +getterSetter() 全フィールド分
+    }
+    class NoticeDTO {
+        -int noticeId
+        -String title
+        -String content
+        -Timestamp createdAt
+        -Timestamp updatedAt
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    MainServlet ..> main_jsp : forward 表示
+    MainServlet ..> WorkshopService : findAll
+    MainServlet ..> NoticeService : findAll
+    WorkshopService --> WorkshopDAO
+    NoticeService --> NoticeDAO
+    WorkshopDAO --> DBConnection
+    NoticeDAO --> DBConnection
+    WorkshopDAO ..> WorkshopDTO : マッピング
+    NoticeDAO ..> NoticeDTO : マッピング

@@ -1,0 +1,71 @@
+---
+title: 会員登録 機能 クラス図（JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class register_jsp["register.jsp"] {
+        <<JSP>>
+        +inputForm() name_email_phone_address_password
+        +passwordConfirmCheck() JS
+        +showError() error属性
+    }
+    note for register_jsp "form action=/register method=post"
+
+    class RegisterServlet {
+        -MemberService memberService
+        +doGet(req, resp)
+        +doPost(req, resp)
+    }
+    class MemberService {
+        -MemberDAO memberDAO
+        +register(MemberDTO) boolean
+        +login(email, pw) MemberDTO
+        +findAll() List
+        +findById(id) MemberDTO
+        +delete(id) boolean
+        -validateForRegister(MemberDTO)
+    }
+    class ValidationUtil {
+        -Pattern EMAIL
+        -Pattern PHONE
+        +isBlank(s)$ boolean
+        +lengthBetween(s, min, max)$ boolean
+        +isEmail(s)$ boolean
+        +isPhone(s)$ boolean
+    }
+    class MemberDAO {
+        +insert(MemberDTO) boolean
+        +findByEmail(email) MemberDTO
+        +findById(id) MemberDTO
+        +existsByEmail(email) boolean
+        +findAll() List
+        +delete(id) boolean
+        -mapRow(rs) MemberDTO
+    }
+    class MemberDTO {
+        -int memberId
+        -String name
+        -String email
+        -String phone
+        -String address
+        -String password
+        -String role
+        -Timestamp createdAt
+        +isAdmin() boolean
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        -String URL
+        -String USER
+        -String PASSWORD
+        +getConnection()$ Connection
+    }
+
+    RegisterServlet ..> register_jsp : forward 表示
+    register_jsp ..> RegisterServlet : POST 送信
+    RegisterServlet ..> MemberService : register
+    RegisterServlet ..> MemberDTO : 入力を格納
+    MemberService ..> ValidationUtil : 入力検証
+    MemberService --> MemberDAO : existsByEmail と insert
+    MemberDAO --> DBConnection : 接続取得
+    MemberDAO ..> MemberDTO : マッピング

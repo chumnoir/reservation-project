@@ -1,0 +1,65 @@
+---
+title: お知らせ管理 機能 クラス図（フィルタ・JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class noticeManage_jsp["admin/noticeManage.jsp"] {
+        <<JSP>>
+        +noticeTable() notices属性
+        +editLink_deleteForm()
+    }
+    class noticeForm_jsp["admin/noticeForm.jsp"] {
+        <<JSP>>
+        +form() insert_or_update
+        +inputs() title_content
+    }
+    class AdminAuthFilter {
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "IP許可リスト + loginAdmin 認証"
+
+    class NoticeAdminServlet {
+        -NoticeService noticeService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -parseInt(s, def) int
+    }
+    class NoticeService {
+        -NoticeDAO noticeDAO
+        +findAll() List
+        +findById(id) NoticeDTO
+        +create(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+        -validate(NoticeDTO)
+    }
+    class NoticeDAO {
+        +findAll() List
+        +findById(id) NoticeDTO
+        +insert(NoticeDTO) boolean
+        +update(NoticeDTO) boolean
+        +delete(id) boolean
+        -mapRow(rs) NoticeDTO
+    }
+    class NoticeDTO {
+        -int noticeId
+        -String title
+        -String content
+        -Timestamp createdAt
+        -Timestamp updatedAt
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    AdminAuthFilter ..> NoticeAdminServlet : 認証OKで通過
+    NoticeAdminServlet ..> noticeManage_jsp : 一覧 forward
+    NoticeAdminServlet ..> noticeForm_jsp : 追加/編集 forward
+    noticeManage_jsp ..> NoticeAdminServlet : POST delete
+    noticeForm_jsp ..> NoticeAdminServlet : POST insert/update
+    NoticeAdminServlet ..> NoticeService : CRUD
+    NoticeService --> NoticeDAO
+    NoticeDAO --> DBConnection
+    NoticeDAO ..> NoticeDTO : マッピング

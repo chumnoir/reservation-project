@@ -1,0 +1,75 @@
+---
+title: ワークショップ管理 機能 クラス図（フィルタ・JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class workshopManage_jsp["admin/workshopManage.jsp"] {
+        <<JSP>>
+        +workshopTable() workshops属性
+        +editLink_deleteForm()
+    }
+    class workshopForm_jsp["admin/workshopForm.jsp"] {
+        <<JSP>>
+        +form() insert_or_update
+        +inputs() title_description_instructor_eventDate_startTime_capacity_price
+    }
+    class AdminAuthFilter {
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "IP許可リスト + loginAdmin 認証"
+
+    class WorkshopAdminServlet {
+        -WorkshopService workshopService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -buildWorkshop(req, withId) WorkshopDTO
+        -parseDate(s) Date
+        -parseTime(s) Time
+        -parseInt(s, def) int
+    }
+    class WorkshopService {
+        -WorkshopDAO workshopDAO
+        +findAll() List
+        +findById(id) WorkshopDTO
+        +create(WorkshopDTO) boolean
+        +update(WorkshopDTO) boolean
+        +delete(id) boolean
+        -validate(WorkshopDTO)
+    }
+    class WorkshopDAO {
+        +findAll() List
+        +findById(id) WorkshopDTO
+        +insert(WorkshopDTO) boolean
+        +update(WorkshopDTO) boolean
+        +delete(id) boolean
+        -mapRow(rs) WorkshopDTO
+    }
+    class WorkshopDTO {
+        -int workshopId
+        -String title
+        -String description
+        -String instructor
+        -Date eventDate
+        -Time startTime
+        -int capacity
+        -int price
+        -Timestamp createdAt
+        -int reservedCount
+        +getRemainingSeats() int
+        +isFull() boolean
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    AdminAuthFilter ..> WorkshopAdminServlet : 認証OKで通過
+    WorkshopAdminServlet ..> workshopManage_jsp : 一覧 forward
+    WorkshopAdminServlet ..> workshopForm_jsp : 追加/編集 forward
+    workshopManage_jsp ..> WorkshopAdminServlet : POST delete
+    workshopForm_jsp ..> WorkshopAdminServlet : POST insert/update
+    WorkshopAdminServlet ..> WorkshopService : CRUD
+    WorkshopService --> WorkshopDAO
+    WorkshopDAO --> DBConnection
+    WorkshopDAO ..> WorkshopDTO : マッピング

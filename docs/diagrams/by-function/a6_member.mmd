@@ -1,0 +1,63 @@
+---
+title: 会員管理 機能 クラス図（フィルタ・JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class memberManage_jsp["admin/memberManage.jsp"] {
+        <<JSP>>
+        +memberTable() members属性
+        +deleteForm() 自分以外
+    }
+    class AdminAuthFilter {
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "IP許可リスト + loginAdmin 認証"
+
+    class MemberAdminServlet {
+        -MemberService memberService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -parseInt(s, def) int
+    }
+    class MemberService {
+        -MemberDAO memberDAO
+        +findAll() List
+        +delete(id) boolean
+        +login(email, pw) MemberDTO
+        +register(MemberDTO) boolean
+        +findById(id) MemberDTO
+        -validateForRegister(MemberDTO)
+    }
+    class MemberDAO {
+        +findAll() List
+        +delete(id) boolean
+        +findByEmail(email) MemberDTO
+        +findById(id) MemberDTO
+        +insert(MemberDTO) boolean
+        +existsByEmail(email) boolean
+        -mapRow(rs) MemberDTO
+    }
+    class MemberDTO {
+        -int memberId
+        -String name
+        -String email
+        -String phone
+        -String address
+        -String password
+        -String role
+        -Timestamp createdAt
+        +isAdmin() boolean
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    AdminAuthFilter ..> MemberAdminServlet : 認証OKで通過
+    MemberAdminServlet ..> memberManage_jsp : 一覧 forward
+    memberManage_jsp ..> MemberAdminServlet : POST delete
+    MemberAdminServlet ..> MemberService : findAll / delete
+    MemberService --> MemberDAO
+    MemberDAO --> DBConnection
+    MemberDAO ..> MemberDTO : マッピング

@@ -1,0 +1,48 @@
+---
+title: 管理ダッシュボード 機能 クラス図（フィルタ・JSP含む）
+---
+classDiagram
+    direction LR
+    class adminHeader_jspf["admin/_adminHeader.jspf"] {
+        <<JSP fragment>>
+        +navMenu() 各管理画面リンク
+    }
+    class dashboard_jsp["admin/dashboard.jsp"] {
+        <<JSP>>
+        +statGrid() notice_workshop_reservation_member 件数
+    }
+    class AdminAuthFilter {
+        -List allowedIps
+        +init(config)
+        +doFilter(req, res, chain)
+        -isAllowedIp(ip) boolean
+    }
+    note for AdminAuthFilter "IP許可リスト + loginAdmin 認証"
+
+    class AdminDashboardServlet {
+        -WorkshopService workshopService
+        -ReservationService reservationService
+        -NoticeService noticeService
+        -MemberService memberService
+        +doGet(req, resp)
+    }
+    class WorkshopService {
+        +findAll() List
+    }
+    class ReservationService {
+        +findAll() List
+    }
+    class NoticeService {
+        +findAll() List
+    }
+    class MemberService {
+        +findAll() List
+    }
+
+    AdminAuthFilter ..> AdminDashboardServlet : 認証OKで通過
+    dashboard_jsp ..> adminHeader_jspf : include
+    AdminDashboardServlet ..> dashboard_jsp : forward 表示
+    AdminDashboardServlet ..> WorkshopService : findAll size
+    AdminDashboardServlet ..> ReservationService : findAll size
+    AdminDashboardServlet ..> NoticeService : findAll size
+    AdminDashboardServlet ..> MemberService : findAll size

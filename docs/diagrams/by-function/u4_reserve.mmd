@@ -1,0 +1,109 @@
+---
+title: 予約 機能 クラス図（JSP含む・全メンバー明示）
+---
+classDiagram
+    direction LR
+    class reservation_jsp["reservation.jsp"] {
+        <<JSP>>
+        +detailList() workshop属性
+        +courseSelect() courses属性
+        +peopleSelect() 残席数まで
+        +showError() error属性
+    }
+    note for reservation_jsp "form action=/user/reserve method=post (workshopId, courseId, numberOfPeople)"
+    class myReservations_jsp["myReservations.jsp"] {
+        <<JSP>>
+        +reservationTable() reservations属性
+        +cancelButton() action=cancel
+    }
+
+    class ReservationServlet {
+        -ReservationService reservationService
+        -WorkshopService workshopService
+        -CourseService courseService
+        +doGet(req, resp)
+        +doPost(req, resp)
+        -parseInt(s, def) int
+    }
+    class ReservationService {
+        -ReservationDAO reservationDAO
+        -WorkshopDAO workshopDAO
+        -CourseDAO courseDAO
+        +reserve(mId, wId, cId, people) boolean
+        +cancel(rId, mId) void
+        +findAll() List
+        +findByMemberId(mId) List
+        +findById(rId) ReservationDTO
+        +update(ReservationDTO) boolean
+        +delete(rId) boolean
+    }
+    class WorkshopService {
+        +findById(id) WorkshopDTO
+        +findAll() List
+    }
+    class CourseService {
+        -CourseDAO courseDAO
+        +findAll() List
+        +findById(id) CourseDTO
+    }
+    class ReservationDAO {
+        +insert(ReservationDTO) boolean
+        +findAll() List
+        +findByMemberId(mId) List
+        +findById(rId) ReservationDTO
+        +existsReservation(mId, wId) boolean
+        +cancelByMember(rId, mId) boolean
+        +update(ReservationDTO) boolean
+        +delete(rId) boolean
+        -mapRow(rs) ReservationDTO
+    }
+    class WorkshopDAO {
+        +findById(id) WorkshopDTO
+        -mapRow(rs) WorkshopDTO
+    }
+    class CourseDAO {
+        +findAll() List
+        +findById(id) CourseDTO
+        -mapRow(rs) CourseDTO
+    }
+    class ReservationDTO {
+        -int reservationId
+        -int memberId
+        -int workshopId
+        -int courseId
+        -int numberOfPeople
+        -String status
+        -Timestamp reservedAt
+        -String memberName
+        -String memberEmail
+        -String workshopTitle
+        -String courseName
+        -Date eventDate
+        -Time startTime
+        +getterSetter() 全フィールド分
+    }
+    class CourseDTO {
+        -int courseId
+        -String name
+        -String description
+        -int price
+        -Timestamp createdAt
+        +getterSetter() 全フィールド分
+    }
+    class DBConnection {
+        +getConnection()$ Connection
+    }
+
+    ReservationServlet ..> reservation_jsp : 確認画面 forward
+    ReservationServlet ..> myReservations_jsp : マイ予約 forward
+    reservation_jsp ..> ReservationServlet : POST 送信
+    myReservations_jsp ..> ReservationServlet : POST cancel
+    ReservationServlet ..> ReservationService : reserve / cancel / findByMemberId
+    ReservationServlet ..> WorkshopService : findById
+    ReservationServlet ..> CourseService : findAll
+    ReservationService --> ReservationDAO
+    ReservationService --> WorkshopDAO : 残席と存在確認
+    ReservationService --> CourseDAO : コース存在確認
+    ReservationDAO --> DBConnection
+    ReservationDAO ..> ReservationDTO : マッピング
+    CourseDAO ..> CourseDTO : マッピング
