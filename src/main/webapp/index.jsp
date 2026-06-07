@@ -18,6 +18,9 @@
         <%-- 管理者画面への導線は一般利用者ページには載せない。
              管理者は別URL(/admin/login)へ直接アクセスし、かつ許可IP(店舗端末)
              からのみ到達できる(AdminAuthFilterのIP許可リストで制御)。 --%>
+        <p class="landing-admin">
+            <a href="${pageContext.request.contextPath}/combined/">Service統合版（別構成のデモ）はこちら →</a>
+        </p>
     </div>
 </body>
 </html>

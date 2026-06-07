@@ -1,0 +1,20 @@
+<%-- 静的インクルード(<%@ include %>)されるフラグメント。
+     親JSPのpageEncodingは適用されず、未指定だとTomcat既定の
+     ISO-8859-1で読み込まれ日本語が文字化けするため、UTF-8を明示する。 --%>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<header class="admin-header">
+    <div class="admin-header-inner">
+        <h1 class="admin-logo">
+            <a href="${pageContext.request.contextPath}/combined/admin/dashboard">陶芸WS 管理画面〔統合版〕</a>
+        </h1>
+        <nav class="admin-nav">
+            <a href="${pageContext.request.contextPath}/combined/admin/notice">お知らせ管理</a>
+            <a href="${pageContext.request.contextPath}/combined/admin/workshop">ワークショップ管理</a>
+            <a href="${pageContext.request.contextPath}/combined/admin/reservation">予約管理</a>
+            <a href="${pageContext.request.contextPath}/combined/admin/member">会員管理</a>
+            <span class="admin-user">${sessionScope.cbLoginAdmin.name}</span>
+            <a href="${pageContext.request.contextPath}/combined/admin/logout" class="btn btn-sm btn-outline">ログアウト</a>
+        </nav>
+    </div>
+</header>
