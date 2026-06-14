@@ -1,0 +1,178 @@
+@charset "UTF-8";
+/* =========================================================
+   common-layout.css
+   全画面共通：基本骨組み・ボタンシステム
+   ========================================================= */
+
+body {
+	margin: 0;
+	padding: 0;
+	background:
+		radial-gradient(circle at top left, rgba(232, 190, 138, 0.28), transparent 34%),
+		linear-gradient(135deg, #fbf3e8 0%, #f4e3cf 100%);
+	font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+	color: #5f3f25;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.header {
+	height: 60px;
+	border-bottom: 1px solid #ead7bd;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	background: linear-gradient(135deg, #8b5a2b, #b9783f);
+	color: #fff8ee;
+	letter-spacing: 0.08em;
+}
+
+.page {
+	width: 980px;
+	margin: 30px auto;
+
+	background-color: #fffaf3;
+	border: 1px solid #ead7bd;
+	border-radius: 0px;
+	/* コンテナ大枠は直角で */
+	overflow: hidden;
+	box-shadow: 0 14px 36px rgba(111, 73, 38, 0.18);
+	flex: 1;
+}
+
+.page-title {
+	margin: 0;
+	text-align: center;
+	padding: 20px 0;
+	border-bottom: 1px solid #ead7bd;
+	font-size: 24px;
+	font-weight: 700;
+	color: #6b4423;
+	background-color: #fff4e5;
+	letter-spacing: 0.08em;
+}
+
+.content {
+	/* 💡 縦に並べる Flexbox に変更 */
+	display: flex;
+	flex-direction: column;
+	
+	/* 💡 これがポイント！中身を上下・左右とも「中央」に集める*/
+	justify-content: center;
+	align-items: center;
+	
+	/*  上下のパディングを少し広めにスペースを */
+	padding: 90px 32px 60px 32px; 
+	
+	/* 💡 コンテナの余った縦スペースをすべてコンテンツエリアが使い切るように伸ばす */
+	flex: 1; 
+}
+
+.footer {
+	height: 60px;
+	border-top: 1px solid #ead7bd;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: normal;
+	background-color: #f3e2cf;
+	color: #7a5738;
+	letter-spacing: 0.05em;
+	width: 100%;
+	margin-top: auto;
+}
+
+/* --- ボタン共通システム --- */
+.button-row {
+	display: flex;
+	gap: 24px;
+	margin-top: 36px;
+	justify-content: center;
+	/* 確認・完了・一覧画面向けに中央寄せ */
+}
+
+/* ベースの丸角ボタンデザイン */
+.button-row button,
+.button-row .btn-link {
+	width: 160px;
+	height: 44px;
+	border-radius: 999px;
+	/* カプセル型 */
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	box-sizing: border-box;
+	transition: all 0.16s ease;
+}
+
+.button-row button:hover,
+.button-row .btn-link:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 14px rgba(111, 73, 38, 0.16);
+}
+
+/* 肯定ボタン（左側：確定、登録、次へ） */
+.btn-positive {
+	background: linear-gradient(135deg, #d88942, #b96b32);
+	color: #fffaf3;
+	border: 1px solid #a85f2e;
+}
+
+.btn-positive:hover {
+	background: linear-gradient(135deg, #e1984f, #c77739);
+}
+
+/* 否定ボタン（右側：戻る、修正、キャンセル） */
+.btn-negative {
+	color: #7a5738;
+	border: 1px solid #d9b98f;
+	background-color: #fff8ee;
+}
+
+.btn-negative:hover {
+	background-color: #f3e2cf;
+}
+
+
+/* =========================================================
+   ワークショップ一覧：予約カレンダー導線ボタン
+   ========================================================= */
+
+/* ボタンを中央寄せするためのコンテナ */
+.calendar-btn-container {
+    text-align: center;
+    margin: 10px auto 28px auto;
+    width: 100%;
+}
+
+/* 予約ボタン本体の共通スタイル */
+.btn-calendar-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 46px;
+    background-color: #fffdf8;       /* カードと同じ背景色 */
+    color: #6b4423;                  /* 濃いブラウンの文字 */
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: 2px solid #6b4423;       /* 存在感のあるしっかりした枠線 */
+    border-radius: 6px;              /* カプセルではなく、カードと同じ緩やかな丸角 */
+    box-shadow: 0 4px 12px rgba(111, 73, 38, 0.05);
+    transition: all 0.2s ease;
+}
+
+/* ホバー時は色が反転するおしゃれな動き */
+.btn-calendar-link:hover {
+    background-color: #6b4423;       /* 背景が濃いブラウンに */
+    color: #fff8ee;                  /* 文字が白っぽく */
+    transform: translateY(-1px);
+}

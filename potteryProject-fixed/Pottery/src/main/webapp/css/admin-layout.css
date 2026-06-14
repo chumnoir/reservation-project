@@ -1,0 +1,432 @@
+@charset "UTF-8";
+
+/* ===========================================================
+   管理者画面 共通レイアウト（モダン・グレー基調）
+    user 側 (common-layout.css 等) とは独立したスタイル
+   =========================================================== */
+
+:root {
+	--admin-bg: #f4f5f7;
+	--admin-surface: #ffffff;
+	--admin-border: #e1e4e8;
+	--admin-text: #2f343a;
+	--admin-text-sub: #6b7280;
+	--admin-header: #2f343a;
+	--admin-header-text: #f4f5f7;
+	--admin-accent: #4b5563;
+	--admin-accent-hover: #374151;
+	--admin-danger: #b4232a;
+	--admin-danger-hover: #8f1b21;
+	--admin-row-hover: #f0f1f3;
+	--admin-radius: 8px;
+	--admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body.admin {
+	margin: 0;
+	font-family: "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+	background-color: var(--admin-bg);
+	color: var(--admin-text);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* ---------- ヘッダー ---------- */
+.admin-header {
+	background-color: var(--admin-header);
+	color: var(--admin-header-text);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 24px;
+	height: 56px;
+	box-shadow: var(--admin-shadow);
+}
+
+.admin-header .brand {
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	color: var(--admin-header-text);
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.admin-header .brand .brand-badge {
+	background-color: #565d66;
+	color: #fff;
+	font-size: 11px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	letter-spacing: 0.08em;
+}
+
+.admin-nav {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.admin-nav a {
+	color: #cdd1d6;
+	text-decoration: none;
+	font-size: 13.5px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	transition: background-color 0.15s, color 0.15s;
+}
+
+.admin-nav a:hover {
+	background-color: #3c424a;
+	color: #fff;
+}
+
+.admin-nav a.active {
+	background-color: #565d66;
+	color: #fff;
+}
+
+.admin-nav .logout-link {
+	margin-left: 8px;
+	border: 1px solid #565d66;
+}
+
+/* ---------- メイン ---------- */
+.admin-main {
+	flex: 1;
+	width: 100%;
+	max-width: 1040px;
+	margin: 0 auto;
+	padding: 28px 24px 56px;
+}
+
+.admin-page-title {
+	font-size: 22px;
+	font-weight: 700;
+	margin: 0 0 4px;
+}
+
+.admin-page-desc {
+	color: var(--admin-text-sub);
+	font-size: 13.5px;
+	margin: 0 0 24px;
+}
+
+/* ---------- カード ---------- */
+.admin-card {
+	background-color: var(--admin-surface);
+	border: 1px solid var(--admin-border);
+	border-radius: var(--admin-radius);
+	box-shadow: var(--admin-shadow);
+	padding: 24px;
+	margin-bottom: 20px;
+}
+
+/* ---------- トップのメニュー格子 ---------- */
+.admin-menu-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 18px;
+}
+
+.admin-menu-card {
+	display: block;
+	background-color: var(--admin-surface);
+	border: 1px solid var(--admin-border);
+	border-radius: var(--admin-radius);
+	box-shadow: var(--admin-shadow);
+	padding: 22px;
+	text-decoration: none;
+	color: var(--admin-text);
+	transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+
+.admin-menu-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+	border-color: #c7ccd1;
+}
+
+.admin-menu-card .menu-title {
+	font-size: 16px;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.admin-menu-card .menu-desc {
+	font-size: 12.5px;
+	color: var(--admin-text-sub);
+	line-height: 1.6;
+}
+
+/* ---------- テーブル ---------- */
+.admin-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13.5px;
+}
+
+.admin-table thead th {
+	background-color: #eceef0;
+	color: var(--admin-text-sub);
+	text-align: left;
+	font-weight: 600;
+	padding: 11px 14px;
+	border-bottom: 1px solid var(--admin-border);
+	white-space: nowrap;
+}
+
+.admin-table tbody td {
+	padding: 11px 14px;
+	border-bottom: 1px solid var(--admin-border);
+	vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+	background-color: var(--admin-row-hover);
+}
+
+.admin-table tbody tr.selectable {
+	cursor: pointer;
+}
+
+.admin-table .col-select {
+	width: 44px;
+	text-align: center;
+}
+
+.admin-table .num {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+.admin-empty {
+	color: var(--admin-text-sub);
+	text-align: center;
+	padding: 28px 0;
+}
+
+/* ---------- フォーム ---------- */
+.form-row {
+	margin-bottom: 18px;
+}
+
+.form-row label {
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 6px;
+	color: var(--admin-text);
+}
+
+.form-row .hint {
+	font-weight: 400;
+	color: var(--admin-text-sub);
+	font-size: 12px;
+	margin-left: 6px;
+}
+
+.form-control {
+	width: 100%;
+	padding: 9px 12px;
+	border: 1px solid var(--admin-border);
+	border-radius: 6px;
+	font-size: 14px;
+	color: var(--admin-text);
+	background-color: #fff;
+}
+
+.form-control:focus {
+	outline: none;
+	border-color: var(--admin-accent);
+	box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.12);
+}
+
+textarea.form-control {
+	min-height: 120px;
+	resize: vertical;
+}
+
+/* ---------- ボタン ---------- */
+.btn-row {
+	display: flex;
+	gap: 12px;
+	margin-top: 24px;
+	flex-wrap: wrap;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 10px 22px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+}
+
+.btn-primary {
+	background-color: var(--admin-accent);
+	color: #fff;
+}
+
+.btn-primary:hover {
+	background-color: var(--admin-accent-hover);
+}
+
+.btn-danger {
+	background-color: var(--admin-danger);
+	color: #fff;
+}
+
+.btn-danger:hover {
+	background-color: var(--admin-danger-hover);
+}
+
+.btn-secondary {
+	background-color: #fff;
+	color: var(--admin-text);
+	border-color: var(--admin-border);
+}
+
+.btn-secondary:hover {
+	background-color: #eceef0;
+}
+
+.btn:disabled,
+.btn.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* ---------- メッセージ ---------- */
+.alert {
+	padding: 12px 16px;
+	border-radius: 6px;
+	font-size: 13.5px;
+	margin-bottom: 18px;
+}
+
+.alert-error {
+	background-color: #fdecea;
+	color: #8f1b21;
+	border: 1px solid #f5c6c4;
+}
+
+.alert-success {
+	background-color: #e7f4ec;
+	color: #1f6b3b;
+	border: 1px solid #bfe3cd;
+}
+
+.alert-info {
+	background-color: #eef1f5;
+	color: #41495a;
+	border: 1px solid #d7dde6;
+}
+
+/* 確認画面用の定義リスト */
+.confirm-list {
+	border: 1px solid var(--admin-border);
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.confirm-list .row {
+	display: flex;
+	border-bottom: 1px solid var(--admin-border);
+}
+
+.confirm-list .row:last-child {
+	border-bottom: none;
+}
+
+.confirm-list .row .key {
+	width: 180px;
+	background-color: #f3f4f6;
+	padding: 12px 16px;
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--admin-text-sub);
+}
+
+.confirm-list .row .val {
+	flex: 1;
+	padding: 12px 16px;
+	font-size: 14px;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* ---------- 完了画面 ---------- */
+.complete-box {
+	text-align: center;
+	padding: 32px 0;
+}
+
+.complete-box .icon {
+	font-size: 40px;
+	color: #2f9e5b;
+	margin-bottom: 12px;
+}
+
+.complete-box .msg {
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+/* ---------- ログイン ---------- */
+.admin-login-wrap {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 16px;
+}
+
+.admin-login-card {
+	width: 100%;
+	max-width: 380px;
+	background-color: var(--admin-surface);
+	border: 1px solid var(--admin-border);
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+	padding: 36px 32px;
+}
+
+.admin-login-card .login-title {
+	text-align: center;
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.admin-login-card .login-sub {
+	text-align: center;
+	color: var(--admin-text-sub);
+	font-size: 12.5px;
+	margin-bottom: 26px;
+}
+
+/* ---------- フッター ---------- */
+.admin-footer {
+	background-color: #e9ebed;
+	color: var(--admin-text-sub);
+	text-align: center;
+	font-size: 12px;
+	padding: 14px;
+	border-top: 1px solid var(--admin-border);
+}

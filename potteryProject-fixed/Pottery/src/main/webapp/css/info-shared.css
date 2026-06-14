@@ -1,0 +1,100 @@
+@charset "UTF-8";
+/* =========================================================
+   info-shared.css
+   確認・完了・エラー・満席画面 共通スタイル
+   ========================================================= */
+
+/* 確認画面用の共通テーブル（RegisterConfirm, reservationConfirm等で使用） */
+.common-table {
+	width: 100%;
+	max-width: 650px;
+	margin: 20px auto 15px auto;
+	/* 中央寄せ */
+	border-collapse: separate;
+	border-spacing: 0;
+	border: 1px solid #ead7bd;
+	border-radius: 12px;
+	/* ボックスの丸角ルールを適用 */
+	overflow: hidden;
+	box-shadow: 0 6px 20px rgba(111, 73, 38, 0.06);
+}
+
+.common-table th,
+.common-table td {
+
+	padding: 22px 24px;
+	font-size: 18px;
+	border-bottom: 1px solid #f4e3cf;
+	line-height: 1.6;
+}
+
+.common-table th {
+	background-color: #fff4e5;
+	/* タイトル帯同じ薄オレンジ */
+	color: #6b4423;
+	font-weight: 700;
+	width: 30%;
+	text-align: left;
+}
+
+.common-table td {
+	background-color: #fffdf8;
+	color: #5f3f25;
+}
+.common-table tr:last-child th,
+.common-table tr:last-child td {
+	border-bottom: none;
+	/* 一番下の線削除 */
+}
+
+.confirm-message {
+	text-align: center;
+	font-size: 18px;      
+	font-weight: bold;
+	color: #6b4423;
+	margin-top: 0;
+	margin-bottom: 20px;  
+}
+
+/* 完了・満席・エラー画面用のメッセージブロック（reservationComplete, reservationFull等） */
+.message-block {
+	text-align: center;
+	/* すべて中央寄せ */
+	padding: 30px 20px;
+	max-width: 550px;
+	margin: 0 auto;
+}
+
+/* 案内を際立たせるアイコン風のテキスト（チェックマークや！マーク用） */
+.message-icon {
+	font-size: 48px;
+	margin-bottom: 16px;
+	display: block;
+}
+
+.message-icon.success {
+	color: #d88942;
+}
+
+/* 肯定的な案内（完了など） */
+.message-icon.alert {
+	color: #c85f50;
+}
+
+/* 否定的な案内（満席・エラーなど） */
+
+.message-title {
+	font-size: 20px;
+	font-weight: 700;
+	color: #6b4423;
+	margin-bottom: 12px;
+}
+
+.message-text {
+	font-size: 15px;
+	color: #7a5738;
+	line-height: 1.8;
+}
+
+
+

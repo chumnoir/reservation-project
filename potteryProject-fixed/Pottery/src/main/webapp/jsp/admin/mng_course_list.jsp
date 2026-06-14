@@ -1,0 +1,69 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="active" value="course" />
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>コース管理 - 管理画面</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/admin-layout.css">
+</head>
+<body class="admin">
+
+	<%@ include file="adminHeader.jspf"%>
+
+	<main class="admin-main">
+		<h1 class="admin-page-title">コース管理</h1>
+		<p class="admin-page-desc">編集・削除したいコースをラジオボタンで選択し、ボタンを押してください。</p>
+
+		<c:if test="${not empty error}">
+			<div class="alert alert-error"><c:out value="${error}" /></div>
+		</c:if>
+
+		<form method="post"
+			action="${pageContext.request.contextPath}/admin/course">
+			<div class="admin-card">
+				<c:choose>
+					<c:when test="${empty courseList}">
+						<div class="admin-empty">登録されているコースはありません。</div>
+					</c:when>
+					<c:otherwise>
+						<table class="admin-table">
+							<thead>
+								<tr>
+									<th class="col-select">選択</th>
+									<th>コース名</th>
+									<th class="num">参加費</th>
+									<th class="num">所要時間</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="c" items="${courseList}">
+									<tr class="selectable"
+										onclick="this.querySelector('input[type=radio]').checked=true;">
+										<td class="col-select"><input type="radio" name="courseId"
+											value="${c.course_id}"></td>
+										<td><c:out value="${c.course_name}" /></td>
+										<td class="num"><c:out value="${c.price}" /> 円</td>
+										<td class="num"><c:out value="${c.required_time}" /> 分</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:otherwise>
+				</c:choose>
+			</div>
+
+			<div class="btn-row">
+				<a class="btn btn-secondary"
+					href="${pageContext.request.contextPath}/admin/course/add">＋ 新規追加</a>
+				<button type="submit" name="action" value="edit" class="btn btn-primary">編集</button>
+				<button type="submit" name="action" value="delete" class="btn btn-danger">削除</button>
+			</div>
+		</form>
+	</main>
+
+	<footer class="admin-footer">陶筋工房 管理システム | © 2026</footer>
+</body>
+</html>
